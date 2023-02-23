@@ -1,0 +1,71 @@
+# python3.9 lambda base image
+FROM public.ecr.aws/lambda/python:3.9
+
+RUN pip3 install --upgrade pip
+
+# Install system dependencies
+RUN yum install -y poppler-utils
+RUN yum update -y
+
+# install prerequisites
+RUN yum update -y && yum install -y wget tar binutils make
+RUN yum install -y cmake3 && ln -s /usr/bin/cmake3 /usr/bin/cmake
+RUN yum install -y ninja-build && ln -s /usr/bin/ninja-build /usr/bin/ninja
+RUN yum install -y gcc10 gcc10-c++ && ln -s /usr/bin/gcc10-gcc /usr/bin/gcc && ln -s /usr/bin/gcc10-c++ /usr/bin/g++
+
+# building from sources, see https://docs.opencv.org/3.4/dd/dd5/tutorial_py_setup_in_fedora.html
+RUN yum install -y python-devel numpy gtk2-devel libdc1394-devel libv4l-devel ffmpeg-devel gstreamer-plugins-base-devel && \
+    yum install -y libpng-devel libjpeg-turbo-devel jasper-devel openexr-devel libtiff-devel libwebp-devel eigen3-devel
+
+RUN pip3 install numpy
+
+RUN yum install opencv-python -y
+RUN yum install git -y
+RUN yum install -y glibc-utils
+
+ARG LEPTONICA_VERSION=1.83.0
+ARG TESSERACT_VERSION=5.3.0
+ARG TMP_BUILD=/tmp
+ARG TESSERACT=/opt/tesseract
+ARG LEPTONICA=/opt/leptonica
+
+RUN mkdir leptonica && \
+    cd leptonica && \
+    wget http://www.leptonica.org/source/leptonica-1.83.0.tar.gz && \
+    tar -zxvf leptonica-1.83.0.tar.gz && \
+    cd leptonica-1.83.0 && \
+    ./configure && \
+    make && \
+    make install
+
+RUN yum install -y libtool
+RUN yum install -y automake
+
+ENV PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:${PKG_CONFIG_PATH}"
+ENV LD_LIBRARY_PATH="/usr/local/lib:${LD_LIBRARY_PATH}"
+
+RUN ln -s /usr/local/lib/libleptonica.so.6 /usr/lib64/liblept.so
+
+RUN /usr/bin/pkg-config --cflags "lept >= 1.74"
+
+RUN mkdir tesseract && \
+    cd tesseract && \
+    wget https://github.com/tesseract-ocr/tesseract/archive/refs/tags/5.3.0.tar.gz && \
+    tar -zxvf 5.3.0.tar.gz && \
+    cd tesseract-5.3.0 && \
+    ./autogen.sh && \
+    ./configure && \
+    make && \
+    make install
+
+RUN mkdir tessdata && \
+    cd tessdata && \
+    wget https://github.com/tesseract-ocr/tessdata/raw/main/eng.traineddata
+
+# Upgrade pip
+RUN pip install --upgrade pip
+
+ENV TESSDATA_PREFIX=tessdata
+
+# setting the CMD to bash
+CMD ["/bin/bash"]
