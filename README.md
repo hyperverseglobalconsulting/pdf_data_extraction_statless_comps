@@ -20,31 +20,57 @@ A scalable solution for processing PDF research papers using AWS Fargate GPU tas
 
 ## Architecture Overview
 ```mermaid
-%% Simplified Architecture Diagram (GitHub-compatible)
+%% Dark Mode Optimized
 graph TD
-    A[User] -->|Upload PDF| B[(S3 Bucket)]
-    B -->|S3 Event| C{SQS Queue}
-    C -->|Poll| D[ECS Fargate]
-    subgraph VPC[Private VPC]
-        D --> E[GPU Task]
-        E -->|Store Data| F[(DocumentDB)]
-        E -->|Save Images| B
+    A[User] -->|Upload PDF| B[(Amazon S3)]
+    
+    subgraph AWS["AWS Cloud"]
+        subgraph VPC["VPC (10.0.0.0/16)"]
+            subgraph PublicSubnet["Public Subnet"]
+                I[Internet Gateway]
+            end
+            
+            subgraph PrivateSubnet["Private Subnet"]
+                D[ECS Fargate Tasks]
+                E[VPC Endpoints]
+            end
+        end
+        
+        B -->|Event Notification| C{Amazon SQS}
+        C -->|Poll Messages| D
+        D -->|Store Extracted Images| B
+        D -->|Save Metadata| F[(Amazon DocumentDB)]
+        D -->|Logs| G[Amazon CloudWatch]
     end
-    D -->|Logs| G[CloudWatch]
     
-    %% Class Definitions
-    classDef storage fill:#d9ead3,stroke:#38761d;
-    classDef queue fill:#d9d2e9,stroke:#674ea7;
-    classDef compute fill:#c9daf8,stroke:#3c78d8;
-    classDef database fill:#f4cccc,stroke:#cc0000;
-    classDef user fill:#fff2cc,stroke:#bf9000;
+    %% Explicit White Backgrounds
+    classDef aws fill:#ffffff,stroke:#333,color:#000000;
+    classDef vpc fill:#ffffff,stroke:#2d72d9,color:#000000;
+    classDef public fill:#ffffff,stroke:#34a853,color:#000000;
+    classDef private fill:#ffffff,stroke:#d93025,color:#000000;
+    classDef service fill:#ffffff,stroke:#5f6368,color:#000000;
+    classDef textbg fill:#ffffff,stroke:#ffffff,color:#000000;
     
-    class B storage;
-    class C queue;
-    class D,E compute;
-    class F database;
-    class A user;
-    class G storage;
+    %% Apply Styles
+    class AWS aws;
+    class VPC vpc;
+    class PublicSubnet public;
+    class PrivateSubnet private;
+    class B,C,F,G,I,D,E service;
+    class A textbg;
+    
+    %% Force white background for all elements
+    style AWS fill:#ffffff
+    style VPC fill:#ffffff
+    style PublicSubnet fill:#ffffff
+    style PrivateSubnet fill:#ffffff
+    style B fill:#ffffff
+    style C fill:#ffffff
+    style D fill:#ffffff
+    style E fill:#ffffff
+    style F fill:#ffffff
+    style G fill:#ffffff
+    style I fill:#ffffff
 ```
 
 Components:
