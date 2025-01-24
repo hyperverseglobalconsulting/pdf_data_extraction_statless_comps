@@ -20,41 +20,31 @@ A scalable solution for processing PDF research papers using AWS Fargate GPU tas
 
 ## Architecture Overview
 ```mermaid
-%% Architecture Diagram with Standard Colors
+%% Simplified Architecture Diagram (GitHub-compatible)
 graph TD
     A[User] -->|Upload PDF| B[(S3 Bucket)]
-    B -->|S3 Event Notification| C{SQS Queue}
-    C -->|Poll Messages| D[ECS Fargate Task]
-    subgraph VPC [AWS VPC]
-        subgraph PrivateSubnet [Private Subnet]
-            D -->|Process PDF| E[GPU Instance]
-            E -->|Extract Data| F[(DocumentDB)]
-            E -->|Store Images| B
-        end
-        subgraph VPCEndpoints [VPC Endpoints]
-            G[S3 Endpoint]
-            H[SQS Endpoint]
-            I[ECR Endpoint]
-            J[CloudWatch Endpoint]
-        end
+    B -->|S3 Event| C{SQS Queue}
+    C -->|Poll| D[ECS Fargate]
+    subgraph VPC[Private VPC]
+        D --> E[GPU Task]
+        E -->|Store Data| F[(DocumentDB)]
+        E -->|Save Images| B
     end
-    D -->|Logs| K[CloudWatch]
-
-    classDef storage fill:#90EE90,stroke:#2E8B57;  /* Light green */
-    classDef queue fill:#D3D3D3,stroke:#696969;    /* Light gray */
-    classDef compute fill:#B0C4DE,stroke:#4682B4;  /* Light steel blue */
-    classDef database fill:#FFB6C1,stroke:#CD5C5C; /* Light red */
-    classDef user fill:#E6E6FA,stroke:#9370DB;     /* Lavender */
-    classDef vpc fill:#F5F5F5,stroke:#808080;      /* Light gray */
-    classDef endpoint fill:#FFFACD,stroke:#DAA520; /* Light goldenrod */
+    D -->|Logs| G[CloudWatch]
+    
+    %% Class Definitions
+    classDef storage fill:#d9ead3,stroke:#38761d;
+    classDef queue fill:#d9d2e9,stroke:#674ea7;
+    classDef compute fill:#c9daf8,stroke:#3c78d8;
+    classDef database fill:#f4cccc,stroke:#cc0000;
+    classDef user fill:#fff2cc,stroke:#bf9000;
     
     class B storage;
     class C queue;
     class D,E compute;
     class F database;
     class A user;
-    class VPC vpc;
-    class VPCEndpoints endpoint;
+    class G storage;
 ```
 
 Components:
