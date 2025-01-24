@@ -20,7 +20,7 @@ A scalable solution for processing PDF research papers using AWS Fargate GPU tas
 
 ## Architecture Overview
 ```mermaid
-%% Dark Mode Optimized
+%% Dark Mode Optimized (Light Yellow Background)
 graph TD
     A[User] -->|Upload PDF| B[(Amazon S3)]
     
@@ -43,13 +43,13 @@ graph TD
         D -->|Logs| G[Amazon CloudWatch]
     end
     
-    %% Explicit White Backgrounds
-    classDef aws fill:#ffffff,stroke:#333,color:#000000;
-    classDef vpc fill:#ffffff,stroke:#2d72d9,color:#000000;
-    classDef public fill:#ffffff,stroke:#34a853,color:#000000;
-    classDef private fill:#ffffff,stroke:#d93025,color:#000000;
-    classDef service fill:#ffffff,stroke:#5f6368,color:#000000;
-    classDef textbg fill:#ffffff,stroke:#ffffff,color:#000000;
+    %% Light Yellow Backgrounds
+    classDef aws fill:#fffacd,stroke:#333,color:#000000;
+    classDef vpc fill:#fffacd,stroke:#2d72d9,color:#000000;
+    classDef public fill:#fffacd,stroke:#34a853,color:#000000;
+    classDef private fill:#fffacd,stroke:#d93025,color:#000000;
+    classDef service fill:#fffacd,stroke:#5f6368,color:#000000;
+    classDef textbg fill:#fffacd,stroke:#fffacd,color:#000000;
     
     %% Apply Styles
     class AWS aws;
@@ -59,18 +59,18 @@ graph TD
     class B,C,F,G,I,D,E service;
     class A textbg;
     
-    %% Force white background for all elements
-    style AWS fill:#ffffff
-    style VPC fill:#ffffff
-    style PublicSubnet fill:#ffffff
-    style PrivateSubnet fill:#ffffff
-    style B fill:#ffffff
-    style C fill:#ffffff
-    style D fill:#ffffff
-    style E fill:#ffffff
-    style F fill:#ffffff
-    style G fill:#ffffff
-    style I fill:#ffffff
+    %% Force light yellow background
+    style AWS fill:#fffacd
+    style VPC fill:#fffacd
+    style PublicSubnet fill:#fffacd
+    style PrivateSubnet fill:#fffacd
+    style B fill:#fffacd
+    style C fill:#fffacd
+    style D fill:#fffacd
+    style E fill:#fffacd
+    style F fill:#fffacd
+    style G fill:#fffacd
+    style I fill:#fffacd
 ```
 
 Components:
