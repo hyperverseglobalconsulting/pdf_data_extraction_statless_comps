@@ -19,7 +19,42 @@ A scalable solution for processing PDF research papers using AWS Fargate GPU tas
 - [License](#license)
 
 ## Architecture Overview
-![System Architecture](docs/architecture.png) *Placeholder - Update with actual diagram*
+```mermaid
+%% Architecture Diagram
+graph TD
+    A[User] -->|Upload PDF| B[(S3 Bucket)]
+    B -->|S3 Event Notification| C{SQS Queue}
+    C -->|Poll Messages| D[ECS Fargate Task]
+    subgraph VPC [AWS VPC]
+        subgraph PrivateSubnet [Private Subnet]
+            D -->|Process PDF| E[GPU Instance]
+            E -->|Extract Data| F[(DocumentDB)]
+            E -->|Store Images| B
+        end
+        subgraph VPCEndpoints [VPC Endpoints]
+            G[S3 Endpoint]
+            H[SQS Endpoint]
+            I[ECR Endpoint]
+            J[CloudWatch Endpoint]
+        end
+    end
+    D -->|Logs| K[CloudWatch]
+    style VPC fill:#f0f0f0,stroke:#333,stroke-width:2px
+    style PrivateSubnet fill:#e6f3ff,stroke:#0066cc
+    style VPCEndpoints fill:#ffe6e6,stroke:#cc0000
+
+    classDef storage fill:#ffeb99,stroke:#f0c000;
+    classDef queue fill:#c2f0c2,stroke:#33cc33;
+    classDef compute fill:#c2d6f0,stroke:#0066cc;
+    classDef database fill:#ffb3b3,stroke:#cc0000;
+    classDef user fill:#e6ccff,stroke:#6600cc;
+    
+    class B storage;
+    class C queue;
+    class D,E compute;
+    class F database;
+    class A user;
+```
 
 Components:
 - **S3 Bucket**: PDF storage with event notifications
