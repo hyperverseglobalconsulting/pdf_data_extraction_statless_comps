@@ -20,7 +20,7 @@ A scalable solution for processing PDF research papers using AWS Fargate GPU tas
 
 ## Architecture Overview
 ```mermaid
-%% Architecture Diagram
+%% Architecture Diagram with Standard Colors
 graph TD
     A[User] -->|Upload PDF| B[(S3 Bucket)]
     B -->|S3 Event Notification| C{SQS Queue}
@@ -39,21 +39,22 @@ graph TD
         end
     end
     D -->|Logs| K[CloudWatch]
-    style VPC fill:#f0f0f0,stroke:#333,stroke-width:2px
-    style PrivateSubnet fill:#e6f3ff,stroke:#0066cc
-    style VPCEndpoints fill:#ffe6e6,stroke:#cc0000
 
-    classDef storage fill:#ffeb99,stroke:#f0c000;
-    classDef queue fill:#c2f0c2,stroke:#33cc33;
-    classDef compute fill:#c2d6f0,stroke:#0066cc;
-    classDef database fill:#ffb3b3,stroke:#cc0000;
-    classDef user fill:#e6ccff,stroke:#6600cc;
+    classDef storage fill:#90EE90,stroke:#2E8B57;  /* Light green */
+    classDef queue fill:#D3D3D3,stroke:#696969;    /* Light gray */
+    classDef compute fill:#B0C4DE,stroke:#4682B4;  /* Light steel blue */
+    classDef database fill:#FFB6C1,stroke:#CD5C5C; /* Light red */
+    classDef user fill:#E6E6FA,stroke:#9370DB;     /* Lavender */
+    classDef vpc fill:#F5F5F5,stroke:#808080;      /* Light gray */
+    classDef endpoint fill:#FFFACD,stroke:#DAA520; /* Light goldenrod */
     
     class B storage;
     class C queue;
     class D,E compute;
     class F database;
     class A user;
+    class VPC vpc;
+    class VPCEndpoints endpoint;
 ```
 
 Components:
