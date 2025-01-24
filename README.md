@@ -20,7 +20,7 @@ A scalable solution for processing PDF research papers using AWS Fargate GPU tas
 
 ## Architecture Overview
 ```mermaid
-%% Dark Mode Optimized (Light Yellow Background)
+%% Dark Mode Optimized (Light Pastel Colors)
 graph TD
     A[User] -->|Upload PDF| B[(Amazon S3)]
     
@@ -43,13 +43,12 @@ graph TD
         D -->|Logs| G[Amazon CloudWatch]
     end
     
-    %% Light Yellow Backgrounds
-    classDef aws fill:#fffacd,stroke:#333,color:#000000;
-    classDef vpc fill:#fffacd,stroke:#2d72d9,color:#000000;
-    classDef public fill:#fffacd,stroke:#34a853,color:#000000;
-    classDef private fill:#fffacd,stroke:#d93025,color:#000000;
-    classDef service fill:#fffacd,stroke:#5f6368,color:#000000;
-    classDef textbg fill:#fffacd,stroke:#fffacd,color:#000000;
+    %% Color Definitions
+    classDef aws fill:#e6f3ff,stroke:#0066cc,color:#000;  /* Light blue */
+    classDef vpc fill:#e6ffe6,stroke:#008000,color:#000;  /* Light green */
+    classDef public fill:#ffe6e6,stroke:#cc0000,color:#000;  /* Light coral */
+    classDef private fill:#f0e6ff,stroke:#6600cc,color:#000;  /* Light lavender */
+    classDef service fill:#fff5e6,stroke:#cc8800,color:#000;  /* Light beige */
     
     %% Apply Styles
     class AWS aws;
@@ -57,20 +56,13 @@ graph TD
     class PublicSubnet public;
     class PrivateSubnet private;
     class B,C,F,G,I,D,E service;
-    class A textbg;
     
-    %% Force light yellow background
-    style AWS fill:#fffacd
-    style VPC fill:#fffacd
-    style PublicSubnet fill:#fffacd
-    style PrivateSubnet fill:#fffacd
-    style B fill:#fffacd
-    style C fill:#fffacd
-    style D fill:#fffacd
-    style E fill:#fffacd
-    style F fill:#fffacd
-    style G fill:#fffacd
-    style I fill:#fffacd
+    %% Force background colors
+    style AWS fill:#e6f3ff
+    style VPC fill:#e6ffe6
+    style PublicSubnet fill:#ffe6e6
+    style PrivateSubnet fill:#f0e6ff
+    style B,C,F,G,I,D,E fill:#fff5e6
 ```
 
 Components:
