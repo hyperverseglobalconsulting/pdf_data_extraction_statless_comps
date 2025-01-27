@@ -96,8 +96,8 @@ Components:
 ### Initial Setup
 ```bash
 # Clone repository
-git clone https://github.com/your-org/pdf-processing-system
-cd pdf-processing-system
+git clone https://github.com/hyperverseglobalconsulting/pdf_data_extraction_statless_comps.git
+cd pdf_data_extraction_statless_comps
 
 # Initialize Terraform
 terraform init
