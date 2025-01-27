@@ -3,6 +3,7 @@ import boto3
 import logging
 from pdf2docx import Converter
 from botocore.exceptions import NoCredentialsError, PartialCredentialsError
+import json
 
 # Initialize logging
 logging.basicConfig(level=logging.INFO)
@@ -12,15 +13,13 @@ logger = logging.getLogger(__name__)
 s3_client = boto3.client('s3')
 
 # Get environment variables
-bucket_name = os.environ.get('S3_BUCKET')
-object_key = os.environ.get('OBJECT_KEY')
+bucket_name = os.environ['S3_BUCKET']
+object_key = os.environ['OBJECT_KEY']
+sqs_queue_url = os.environ['SQS_QUEUE_URL']
+dlq_queue_url = os.environ['DLQ_QUEUE_URL']
 
-def validate_environment_variables():
-    """
-    Validate that required environment variables are set.
-    """
-    if not bucket_name or not object_key:
-        raise ValueError("S3_BUCKET and OBJECT_KEY environment variables must be set.")
+# Initialize SQS client
+sqs_client = boto3.client('sqs')
 
 def download_pdf_from_s3(bucket, key, local_path):
     """
@@ -57,11 +56,22 @@ def upload_docx_to_s3(bucket, key, local_path):
         logger.error(f"Error uploading DOCX to S3: {e}")
         raise
 
+def send_to_dlq(message):
+    """
+    Send a failed message to the DLQ.
+    """
+    try:
+        sqs_client.send_message(
+            QueueUrl=dlq_queue_url,
+            MessageBody=message
+        )
+        logger.info(f"Sent message to DLQ: {dlq_queue_url}")
+    except Exception as e:
+        logger.error(f"Error sending message to DLQ: {e}")
+        raise
+
 def main():
     try:
-        # Validate environment variables
-        validate_environment_variables()
-
         # Define local file paths
         pdf_file = "/tmp/input.pdf"
         docx_file = "/tmp/output.docx"
@@ -82,8 +92,12 @@ def main():
 
     except Exception as e:
         logger.error(f"Error processing PDF: {e}")
-        # Propagate the exception to let SQS handle retries and DLQ routing
-        raise
+        # Send the failed message to the DLQ
+        send_to_dlq(json.dumps({
+            "bucket": bucket_name,
+            "object_key": object_key,
+            "error": str(e)
+        }))
 
 if __name__ == "__main__":
     main()

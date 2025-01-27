@@ -17,6 +17,7 @@ def lambda_handler(event, context):
     task_definition = os.environ['ECS_TASK_DEFINITION']
     sqs_queue_url = os.environ['SQS_QUEUE_URL']
     dlq_queue_url = os.environ['DLQ_QUEUE_URL']
+    subnet_ids = json.loads(os.environ["SUBNET_IDS"])
 
     for record in event['Records']:
         try:
@@ -38,7 +39,7 @@ def lambda_handler(event, context):
                     taskDefinition=task_definition,
                     networkConfiguration={
                         'awsvpcConfiguration': {
-                            'subnets': ['subnet-02c51756995a80812'],
+                            'subnets': subnet_ids,
                             'assignPublicIp': 'ENABLED'
                         }
                     },

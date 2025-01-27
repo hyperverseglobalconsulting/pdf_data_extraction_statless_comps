@@ -6,7 +6,7 @@ resource "aws_ecs_service" "pdf_service" {
   name            = "pdf-service"
   cluster         = aws_ecs_cluster.pdf_cluster.id
   task_definition = aws_ecs_task_definition.pdf_task.arn
-  desired_count   = 1
+  desired_count   = 0
   launch_type     = "FARGATE"
 
   network_configuration {
@@ -51,7 +51,7 @@ resource "aws_ecs_task_definition" "pdf_task" {
       logConfiguration = {
         logDriver = "awslogs"
         options = {
-	  awslogs-group         = aws_cloudwatch_log_group.ecs_log_group.name
+          awslogs-group         = aws_cloudwatch_log_group.ecs_log_group.name
           awslogs-region        = data.aws_region.current.name
           awslogs-stream-prefix = "ecs"
         }

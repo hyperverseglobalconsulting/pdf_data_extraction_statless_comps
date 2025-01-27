@@ -1,3 +1,8 @@
+# Define a local variable for subnet IDs (reusable in multiple places)
+locals {
+  lambda_subnet_ids = [aws_subnet.public_subnet.id]
+}
+
 # Lambda Function
 resource "aws_lambda_function" "sqs_trigger_lambda" {
   function_name = "sqs-trigger-lambda"
@@ -6,15 +11,16 @@ resource "aws_lambda_function" "sqs_trigger_lambda" {
   memory_size   = 128
 
   # Use the ECR image as the deployment package
-  image_uri = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/sqs-lambda-trigger:latest"
+  image_uri    = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/sqs-lambda-trigger:latest"
   package_type = "Image" # Specify that the deployment package is a container image
 
   environment {
     variables = {
-      ECS_CLUSTER        = aws_ecs_cluster.pdf_cluster.name
+      ECS_CLUSTER         = aws_ecs_cluster.pdf_cluster.name
       ECS_TASK_DEFINITION = aws_ecs_task_definition.pdf_task.family
-      SQS_QUEUE_URL      = aws_sqs_queue.pdf_queue.id
-      DLQ_QUEUE_URL      = aws_sqs_queue.dlq.id
+      SQS_QUEUE_URL       = aws_sqs_queue.pdf_queue.id
+      DLQ_QUEUE_URL       = aws_sqs_queue.dlq.id
+      SUBNET_IDS          = jsonencode(local.lambda_subnet_ids)
     }
   }
 

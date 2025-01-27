@@ -1,54 +1,51 @@
 # Terraform files
-.terraform/              # Terraform working directory (anywhere in the repo)
-*.tfstate                   # Terraform state files
-*.tfstate.backup            # Terraform state backup files
-*.tfvars                    # Terraform variable files (sensitive data)
-*.tfplan                    # Terraform plan files
-.terraform.lock.hcl         # Terraform dependency lock file
+**/.terraform/              # Match .terraform folders anywhere in the repo
+*.tfstate
+*.tfstate.*                 # Catch all tfstate variations (backups, .backup, etc.)
+*.tfvars
+*.tfplan
+.terraform.lock.hcl
 tfplan.out
 
 # Python files
-**/__pycache__/             # Python bytecode cache (anywhere in the repo)
-*.pyc                       # Compiled Python files
-*.pyo                       # Optimized Python files
-*.pyd                       # Python dynamic modules
-**/venv/                    # Python virtual environment (anywhere in the repo)
-.env                        # Environment variables file
+**/__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+**/venv/
 
 # Docker files
-Dockerfile                  # Dockerfile (if you want to ignore it)
-docker-compose.yml          # Docker Compose file
-docker-compose.override.yml
-.dockerignore               # Docker ignore file
+Dockerfile*
+docker-compose*
+.dockerignore
 
 # AWS CLI and credentials
-.aws/                       # AWS CLI configuration and credentials
-*.pem                       # SSH keys and certificates
+.aws/
+*.pem
 
 # IDE and editor files
-.vscode/                    # Visual Studio Code settings
-.idea/                      # IntelliJ IDEA settings
-*.swp                       # Vim swap files
-*.swo                       # Vim swap files
+.vscode/
+.idea/
+*.swp
+*.swo
 
 # Logs and temporary files
-*.log                       # Log files
-*.tmp                       # Temporary files
-*.bkp                       # Backup files
+*.log
+*.tmp
+*.bkp
 
 # Build and distribution files
-**/dist/                       # Distribution files
-**/build/                      # Build files
-*.egg-info/                 # Python egg metadata
+dist/
+build/
 
-# Backup files and folders
-**/bkp/                     # Ignore the bkp folder in any subfolder
-*.bkp                       # Ignore all .bkp files
+# Environment files
+.env
+.env.local
 
-# Ignore all hidden files except .gitignore
-.*                          # Ignore all hidden files
-!.gitignore                 # Except .gitignore
+# OS metadata
+.DS_Store
+Thumbs.db
 
-# Miscellaneous
-.DS_Store                   # macOS Finder settings
-Thumbs.db                   # Windows thumbnail cache
+# Hidden files (careful with this!)
+.*
+!.gitignore

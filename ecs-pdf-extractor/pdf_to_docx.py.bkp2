@@ -12,15 +12,8 @@ logger = logging.getLogger(__name__)
 s3_client = boto3.client('s3')
 
 # Get environment variables
-bucket_name = os.environ.get('S3_BUCKET')
-object_key = os.environ.get('OBJECT_KEY')
-
-def validate_environment_variables():
-    """
-    Validate that required environment variables are set.
-    """
-    if not bucket_name or not object_key:
-        raise ValueError("S3_BUCKET and OBJECT_KEY environment variables must be set.")
+bucket_name = os.environ['S3_BUCKET']
+object_key = os.environ['OBJECT_KEY']
 
 def download_pdf_from_s3(bucket, key, local_path):
     """
@@ -59,9 +52,6 @@ def upload_docx_to_s3(bucket, key, local_path):
 
 def main():
     try:
-        # Validate environment variables
-        validate_environment_variables()
-
         # Define local file paths
         pdf_file = "/tmp/input.pdf"
         docx_file = "/tmp/output.docx"
