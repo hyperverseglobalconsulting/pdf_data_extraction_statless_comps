@@ -20,7 +20,6 @@ A scalable solution for processing PDF research papers using AWS Fargate GPU tas
 
 ## Architecture Overview
 ```mermaid
-%% AWS Architecture with Isolated DocumentDB Subnet
 graph TD
     A[User] -->|Upload PDF| B[(Amazon S3)]
     
@@ -35,10 +34,6 @@ graph TD
                 D[ECS Fargate Tasks]
                 E[VPC Endpoints]
             end
-            
-            subgraph PrivateSubnet2["Private Subnet 2 (DB)"]
-                F[(Amazon DocumentDB)]
-            end
         end
         
         B -->|Event Notification| C{Amazon SQS}
@@ -46,7 +41,6 @@ graph TD
         H -->|Invokes| D
         D -->|Pull PDF| B
         D -->|Store Extracted Images| B
-        D -->|Save Metadata| F
         D -->|Logs| G[Amazon CloudWatch]
         H -->|Logs| G
     end
@@ -56,7 +50,6 @@ graph TD
     classDef vpc fill:#e6ffe6,stroke:#008000,color:#000;
     classDef public fill:#ffe6e6,stroke:#cc0000,color:#000;
     classDef private1 fill:#f0e6ff,stroke:#6600cc,color:#000;
-    classDef private2 fill:#e6f0ff,stroke:#0044cc,color:#000;
     classDef service fill:#fff5e6,stroke:#cc8800,color:#000;
     
     %% Apply Styles
@@ -64,8 +57,7 @@ graph TD
     class VPC vpc;
     class PublicSubnet public;
     class PrivateSubnet1 private1;
-    class PrivateSubnet2 private2;
-    class B,C,F,G,I,D,E,H service;
+    class B,C,G,I,D,E,H service;
 ```
 
 Components:
