@@ -51,7 +51,27 @@ graph TD
     end
 ```
 ## Workflow
-
+```mermaid
+%% Workflow Diagram
+graph TD
+    A[User] -->|Uploads PDF| B[(Amazon S3)]
+    B -->|Event Notification| C{Amazon SQS}
+    C -->|Triggers| D[AWS Lambda]
+    D -->|Invokes| E[ECS Fargate Task]
+    E -->|Processes Conversion| B
+    B -->|Stores DOCX| F[(Converted Files)]
+    D -->|Logs| G[(CloudWatch)]
+    E -->|Logs| G
+    B -->|Access Logs| G
+    
+    style A fill:#f9f,stroke:#333
+    style B fill:#8f8,stroke:#333
+    style C fill:#88f,stroke:#333
+    style D fill:#f88,stroke:#333
+    style E fill:#4af,stroke:#333
+    style F fill:#8f8,stroke:#333
+    style G fill:#aaa,stroke:#333
+```
 1. User uploads PDF to S3 bucket
 2. S3 event notification sends message to SQS queue
 3. Lambda function triggered by SQS messages
