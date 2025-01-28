@@ -80,8 +80,7 @@ Components:
 - Terraform infrastructure as code
 - VPC configuration with cost-optimized networking
 - S3 + SQS integration
-- GPU-optimized ECS cluster setup
-- DocumentDB cluster configuration
+- ECS cluster setup with Fargate
 
 🛠 **In Progress**  
 - OCR processing container implementation
@@ -93,7 +92,6 @@ Components:
 - Terraform v1.5.0+
 - AWS CLI configured
 - Docker (for container development)
-- GPU-enabled Docker runtime (for local testing)
 
 ## Deployment
 
@@ -113,11 +111,6 @@ terraform plan -out=tfplan
 ```bash
 # Apply configuration
 terraform apply tfplan
-
-# Outputs will show:
-# - S3 bucket name
-# - DocumentDB endpoint
-# - SQS queue URL
 ```
 ## Destroying Resources
 ```bash
@@ -140,8 +133,7 @@ Update `variables.tf` for:
 
 ## Cost Optimization
 - **VPC Design**: Uses interface endpoints instead of NAT Gateway  
-- **Fargate Spot**: Add spot pricing configuration  
-- **DocumentDB**: T3 instances for dev/test environments  
+- **Fargate Spot**: Add spot pricing configuration    
 - **S3 Lifecycle**: Add rules for PDF versioning  
 
 ## Troubleshooting
