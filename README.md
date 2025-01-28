@@ -50,6 +50,8 @@ graph TD
         H -->|Logs| G
     end
 ```
+![Architecture Diagram](pdf2docx_architecture.jpg)
+
 ## Workflow
 
 1. User uploads PDF to S3 bucket
