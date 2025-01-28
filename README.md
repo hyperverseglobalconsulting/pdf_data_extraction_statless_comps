@@ -1,6 +1,6 @@
 # Serverless PDF to DOCX Converter using AWS ECS Fargate
 
-![Architecture Diagram](architecture.png)
+![Architecture Diagram](pdf2docx_architecture.jpg)
 
 A cloud-native solution for converting PDF files to DOCX format using serverless AWS services and ECS Fargate.
 
