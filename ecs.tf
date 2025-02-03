@@ -1,18 +1,19 @@
 resource "aws_ecs_cluster" "pdf_cluster" {
-  name = "pdf-cluster"
+  name     = "pdf-cluster"
 }
 
 resource "aws_ecs_service" "pdf_service" {
-  name            = "pdf-service"
-  cluster         = aws_ecs_cluster.pdf_cluster.id
-  task_definition = aws_ecs_task_definition.pdf_task.arn
-  desired_count   = 0
-  launch_type     = "FARGATE"
+  name             = "pdf-service"
+  cluster          = aws_ecs_cluster.pdf_cluster.id
+  task_definition  = aws_ecs_task_definition.pdf_task.arn
+  desired_count    = 0
+  launch_type      = "FARGATE"
+  platform_version = "1.4.0"
 
   network_configuration {
-    subnets          = [aws_subnet.public_subnet.id]
+    subnets          = aws_subnet.private_subnet[*].id
     security_groups  = [aws_security_group.ecs_sg.id]
-    assign_public_ip = true
+    assign_public_ip = false
   }
 }
 

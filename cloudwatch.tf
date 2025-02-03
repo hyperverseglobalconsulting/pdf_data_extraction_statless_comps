@@ -7,3 +7,8 @@ resource "aws_cloudwatch_log_group" "ecs_log_group" {
   name              = "/ecs/pdf-task"
   retention_in_days = 1
 }
+
+resource "aws_cloudwatch_log_group" "api_gateway_logs" {
+  name              = "/aws/apigateway/presigned-url-api"
+  retention_in_days = 1
+}

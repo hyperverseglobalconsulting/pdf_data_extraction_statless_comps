@@ -19,6 +19,13 @@ provider "aws" {
   profile = "pdfreader"
 }
 
+# Configure us-east-1 for CloudFront and ACM
+provider "aws" {
+  region = "us-east-1"
+  alias  = "virginia"
+  profile = "pdfreader"
+}
+
 data "aws_caller_identity" "current" {}
 
 data "aws_region" "current" {}

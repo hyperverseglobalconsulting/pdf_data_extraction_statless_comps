@@ -8,7 +8,7 @@ resource "aws_sqs_queue" "pdf_queue" {
 }
 
 resource "aws_sqs_queue" "dlq" {
-  name = "pdf-dlq"
+  name     = "pdf-dlq"
 }
 
 resource "aws_sqs_queue_policy" "sqs_policy" {

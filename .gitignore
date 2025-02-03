@@ -29,6 +29,16 @@ docker-compose*
 *.swp
 *.swo
 
+# cv files
+*.pth
+*.pkl
+
+# source pdf files
+*.pdf
+
+# archive
+*.zip
+
 # Logs and temporary files
 *.log
 *.tmp

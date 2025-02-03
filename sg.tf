@@ -56,6 +56,6 @@ resource "aws_security_group" "vpce_sg" {
   }
 
   tags = {
-    Name = "vpce-ecs-sg"
+    Name = "pdf2docx-vpce-ecs-sg"
   }
 }

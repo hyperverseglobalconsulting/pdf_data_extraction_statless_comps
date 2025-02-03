@@ -1,0 +1,6 @@
+layoutparser
+paddlepaddle
+paddleocr
+PyMuPDF
+boto3
+opencv-python
